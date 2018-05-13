@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="table-container">
+        <body>
+        <table>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>empId</th>
+                <th>empName</th>
+                <th>empActive</th>
+                <th>emdDepartment</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>View</td>
+                <td>Delete</td>
+                <td>td1</td>
+                <td>td2</td>
+                <td>td3</td>
+                <td>td4</td>
+                <td>Delete</td>
+            </tr>
+        </table>
+        </body>
+    </div>
+
+    <div class="add-block">
+        <input type="text" placeholder="EmpName" class="add-block-input" id="empName">
+
+        <input type="checkbox" class="add-block-checkbox" id="isActive">
+
+        <select class="add-block-select" id="departmentName">
+            <option value="test">test</option>
+        </select>
+
+        <button class="add-block-saveBtn" onclick="sendNewEmployee()">Save</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
