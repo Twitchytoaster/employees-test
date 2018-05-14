@@ -1,6 +1,7 @@
 package com.ukeess.crud.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +16,7 @@ public class Department {
     private String name;
 
     @OneToMany(mappedBy = "department")
-    List<Employee> employees;
+    List<Employee> employees = new ArrayList<>();
 
     public Long getId() {
         return id;

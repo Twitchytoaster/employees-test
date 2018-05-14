@@ -1,0 +1,58 @@
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin-top: 15px;
+    margin: auto;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+select {
+    min-width: 200px;
+}
+
+.container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.add-block {
+    border: 1px solid black;
+    margin: 15px auto;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.add-block-input {
+    margin: 10px;
+    min-width: 200px;
+}
+
+.add-block-checkbox {
+    margin: 10px;
+}
+
+.add-block-select {
+    min-width: 200px;
+    margin: 10px;
+}
+
+.add-block-saveBtn {
+    margin: 10px;
+}
+
+.delete-employee, .edit-employee, .view-employee {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+

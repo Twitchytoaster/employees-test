@@ -36,12 +36,13 @@
     </div>
 
     <div class="add-block">
-        <input type="text" placeholder="EmpName" class="add-block-input" id="empName">
+        <input type="text" placeholder="EmpName" class="add-block-input" empId="empName">
 
-        <input type="checkbox" class="add-block-checkbox" id="isActive">
+        <input type="checkbox" class="add-block-checkbox" empId="isActive">
 
-        <select class="add-block-select" id="departmentName">
-            <option value="test">test</option>
+        <select class="add-block-select" empId="departmentName">
+            <option value="Finance">Finance</option>
+            <option value="Tech">Tech</option>
         </select>
 
         <button class="add-block-saveBtn" onclick="sendNewEmployee()">Save</button>
