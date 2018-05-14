@@ -1,9 +1,15 @@
 package com.ukeess.crud.service.impl;
 
+import com.ukeess.crud.controller.EmployeeInsertRequest;
+import com.ukeess.crud.controller.EmployeeUpdateRequest;
+import com.ukeess.crud.controller.dto.EmployeeDto;
+import com.ukeess.crud.entity.Department;
 import com.ukeess.crud.entity.Employee;
 import com.ukeess.crud.repository.EmployeeRepository;
 import com.ukeess.crud.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,7 +40,28 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> findAll() {
-        return employeeRepository.findAll();
+    public Page<Employee> findAll(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
+    }
+
+    @Override
+    public Employee createEmployeeFromTheRequest(EmployeeInsertRequest request) {
+        Employee employee = new Employee();
+        employee.setActive(request.isActive());
+        employee.setName(request.getEmpName());
+        return employee;
+    }
+
+    @Override
+    public Employee updateEmployeeFromTheRequest(EmployeeUpdateRequest request, Employee employee) {
+        employee.setName(request.getName());
+        employee.setActive(Boolean.valueOf(request.getActive()));
+        return employee;
+    }
+
+    @Override
+    public EmployeeDto createDtoForUpdatePage(Employee employee) {
+        EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getName(), employee.isActive(), employee.getDepartment().getName());
+        return employeeDto;
     }
 }

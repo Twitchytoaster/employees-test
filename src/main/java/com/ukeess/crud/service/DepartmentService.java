@@ -15,4 +15,6 @@ public interface DepartmentService {
     Department findByName(String name);
 
     List<Department> findAll();
+
+    Department findDepartmentByName(String departmentName);
 }

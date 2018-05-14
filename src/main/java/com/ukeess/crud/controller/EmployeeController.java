@@ -31,9 +31,6 @@ public class EmployeeController {
 
     private DepartmentService departmentService;
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
-
     private PaginationManager paginationManager;
 
     @Autowired
@@ -53,7 +50,7 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public String getAllEmployees(ModelMap modelMap, @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Employee> page = employeeRepository.findAll(pageable);
+        Page<Employee> page = employeeService.findAll(pageable);
         List<EmployeeDto> employeeDtos = getEmployeeDtos(page.getContent());
 
         modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
@@ -79,7 +76,11 @@ public class EmployeeController {
     @PostMapping("/employees/insert")
     @ResponseBody
     public HttpStatus insert(EmployeeInsertRequest request) {
-        employeeService.save(createEmployeeFromTheRequest(request));
+        Employee employee = employeeService.createEmployeeFromTheRequest(request);
+        Department department = departmentService.findDepartmentByName(request.getDepartmentName());
+        employee.setDepartment(department);
+        department.getEmployees().add(employee);
+        employeeService.save(employee);
         return HttpStatus.CREATED;
     }
 
@@ -95,7 +96,7 @@ public class EmployeeController {
             , ModelMap modelMap) {
 
         Employee employee = employeeService.findOne(id);
-        modelMap.addAttribute("employee", createDtoForUpdatePage(employee));
+        modelMap.addAttribute("employee", employeeService.createDtoForUpdatePage(employee));
         return "edit";
     }
 
@@ -103,7 +104,11 @@ public class EmployeeController {
     @ResponseBody
     public HttpStatus update(EmployeeUpdateRequest request) {
         Employee employee = employeeService.findOne(request.getEmpId());
-        employeeService.save(updateEmployeeFromTheRequest(request, employee));
+        employee = employeeService.updateEmployeeFromTheRequest(request, employee);
+        Department department = departmentService.findDepartmentByName(request.getDepartmentName());
+        department.getEmployees().add(employee);
+        employee.setDepartment(department);
+        employeeService.save(employee);
         return HttpStatus.OK;
     }
 
@@ -123,34 +128,5 @@ public class EmployeeController {
                 , e.isActive()
                 , e.getDepartment().getName()))
                 .collect(Collectors.toList());
-    }
-
-    private Employee createEmployeeFromTheRequest(EmployeeInsertRequest request) {
-        Employee employee = new Employee();
-        employee.setActive(request.isActive());
-        employee.setName(request.getEmpName());
-        Department department = findDepartmentByName(request.getDepartmentName());
-        department.getEmployees().add(employee);
-        employee.setDepartment(department);
-        return employee;
-    }
-
-    private Employee updateEmployeeFromTheRequest(EmployeeUpdateRequest request, Employee employee) {
-        employee.setName(request.getName());
-        employee.setActive(Boolean.valueOf(request.getActive()));
-        Department department = findDepartmentByName(request.getDepartmentName());
-        department.getEmployees().add(employee);
-        employee.setDepartment(department);
-        return employee;
-    }
-
-    private EmployeeDto createDtoForUpdatePage(Employee employee) {
-        EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getName(), employee.isActive(), employee.getDepartment().getName());
-        return employeeDto;
-    }
-
-    private Department findDepartmentByName(String departmentName) {
-        Department department = departmentService.findByName(departmentName);
-        return department;
     }
 }
