@@ -24,18 +24,36 @@
             </tr>
         <#list employees as employee>
             <tr>
-                <td><span class="view-employee" empId="${employee.id}"><a href="/employees/view?empId=${employee.id}">View</span></td>
-                <td><span class="edit-employee" empId="${employee.id}"><a href="/employees/update?empId=${employee.id}">Edit</a></span></td>
+                <td><span class="view-employee" empId="${employee.id}"><a href="/employees/view?empId=${employee.id}">View</span>
+                </td>
+                <td><span class="edit-employee" empId="${employee.id}"><a href="/employees/update?empId=${employee.id}">Edit</a></span>
+                </td>
                 <td>${employee.id}</td>
                 <td>${employee.name}</td>
                 <td>${employee.active?c}</td>
                 <td>${employee.departmentName}</td>
-                <td><span class="delete-employee" empId="${employee.id}" onclick="deleteEmployee(${employee.id})">Delete</span></td>
+                <td><span class="delete-employee" empId="${employee.id}"
+                          onclick="deleteEmployee(${employee.id})">Delete</span></td>
             </tr>
         </#list>
 
         </table>
         </body>
+    </div>
+
+    <div class="pagination">
+
+    <#if leftDots>
+        <div class="page-button">...</div>
+    </#if>
+
+    <#list pages as page>
+        <div class="page-button"><a href="/employees?page=${page}">${page}<a/></div>
+    </#list>
+
+    <#if rightDots>
+        <div class="page-button">...</div>
+    </#if>
     </div>
 
     <div class="add-block">

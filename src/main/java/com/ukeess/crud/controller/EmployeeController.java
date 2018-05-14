@@ -2,21 +2,29 @@ package com.ukeess.crud.controller;
 
 import com.ukeess.crud.controller.dto.DepartmentsResponse;
 import com.ukeess.crud.controller.dto.EmployeeDto;
+import com.ukeess.crud.controller.pagination.PaginationManager;
 import com.ukeess.crud.entity.Department;
 import com.ukeess.crud.entity.Employee;
+import com.ukeess.crud.repository.EmployeeRepository;
 import com.ukeess.crud.service.DepartmentService;
 import com.ukeess.crud.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/employees")
 public class EmployeeController {
 
     private EmployeeService employeeService;
@@ -24,21 +32,40 @@ public class EmployeeController {
     private DepartmentService departmentService;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    private PaginationManager paginationManager;
+
+    @Autowired
     public EmployeeController(EmployeeService employeeService
-            , DepartmentService departmentService) {
+            , DepartmentService departmentService
+            , PaginationManager paginationManager) {
 
         this.employeeService = employeeService;
         this.departmentService = departmentService;
+        this.paginationManager = paginationManager;
     }
 
-    @GetMapping
-    public String getAllEmployees(ModelMap modelMap) {
-        List<EmployeeDto> employeeDtos = getEmployeeDtos();
+    @GetMapping("/")
+    public String getMainPage() {
+        return "redirect:/employees";
+    }
+
+    @GetMapping("/employees")
+    public String getAllEmployees(ModelMap modelMap, @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Employee> page = employeeRepository.findAll(pageable);
+        List<EmployeeDto> employeeDtos = getEmployeeDtos(page.getContent());
+
+        modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
+        modelMap.addAttribute("rightDots", paginationManager.hasRightDots(page));
         modelMap.addAttribute("employees", employeeDtos);
+        modelMap.addAttribute("current", page.getNumber());
+        modelMap.addAttribute("pages", paginationManager.createPages(page));
+
         return "index";
     }
 
-    @GetMapping("/departments")
+    @GetMapping("/employees/departments")
     @ResponseBody
     public List<DepartmentsResponse> getDepartmentNames() {
         List<Department> departments = departmentService.findAll();
@@ -49,21 +76,21 @@ public class EmployeeController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/employees/insert")
     @ResponseBody
     public HttpStatus insert(EmployeeInsertRequest request) {
         employeeService.save(createEmployeeFromTheRequest(request));
         return HttpStatus.CREATED;
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/employees/delete")
     @ResponseBody
     public HttpStatus delete(@RequestParam("empId") Long id) {
         employeeService.delete(id);
         return HttpStatus.NO_CONTENT;
     }
 
-    @GetMapping("/update")
+    @GetMapping("/employees/update")
     public String getUpdatePage(@RequestParam("empId") Long id
             , ModelMap modelMap) {
 
@@ -72,7 +99,7 @@ public class EmployeeController {
         return "edit";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/employees/update")
     @ResponseBody
     public HttpStatus update(EmployeeUpdateRequest request) {
         Employee employee = employeeService.findOne(request.getEmpId());
@@ -80,7 +107,7 @@ public class EmployeeController {
         return HttpStatus.OK;
     }
 
-    @GetMapping("/view")
+    @GetMapping("/employees/view")
     public String viewEmployee(@RequestParam("empId") Long empId
             , ModelMap modelMap) {
         Employee employee = employeeService.findOne(empId);
@@ -89,9 +116,7 @@ public class EmployeeController {
         return "view";
     }
 
-    private List<EmployeeDto> getEmployeeDtos() {
-        List<Employee> employees = employeeService.findAll();
-
+    private List<EmployeeDto> getEmployeeDtos(List<Employee> employees) {
         //TODO fix null pointer in department section
         return employees.stream().map(e -> new EmployeeDto(e.getId()
                 , e.getName()
