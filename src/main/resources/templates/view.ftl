@@ -11,7 +11,7 @@
     <div class="edit-form">
         <input type="text" placeholder="EmpName" class="add-block-input" id="empName" value="${employee.name}">
 
-        <#if employee.active?c>
+        <#if employee.active>
             <input type="checkbox" class="add-block-checkbox" id="isActive" checked>
         <#else>
             <input type="checkbox" class="add-block-checkbox" id="isActive">

@@ -86,7 +86,7 @@ public class EmployeeController {
         Employee employee = employeeService.findOne(empId);
         EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getName(), employee.isActive(), employee.getDepartment().getName());
         modelMap.addAttribute("employee", employeeDto);
-        return "edit";
+        return "view";
     }
 
     private List<EmployeeDto> getEmployeeDtos() {
