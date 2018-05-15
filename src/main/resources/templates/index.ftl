@@ -69,6 +69,15 @@
 
         <button class="add-block-saveBtn" onclick="sendNewEmployee()">Save</button>
     </div>
+
+    <div class="search-block">
+        <form action="/employees" method="get">
+            <input type="text" placeholder="employee name" name="startsWith">
+
+            <input type="submit" value="Search">
+        </form>
+
+    </div>
 </div>
 
 <script src="/js/script.js"></script>

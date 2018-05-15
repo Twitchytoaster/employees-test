@@ -53,7 +53,7 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public String getAllEmployees(ModelMap modelMap
-            , @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable
+            , @PageableDefault(size = 3, direction = Sort.Direction.ASC, page = 0) Pageable pageable
             , @RequestParam(value = "startsWith", required = false) String startsWith) {
 
         if(startsWith != null) {
