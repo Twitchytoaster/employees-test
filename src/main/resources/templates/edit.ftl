@@ -23,6 +23,7 @@
         <input type="hidden" value="${employee.id}" id="empId">
 
         <button class="add-block-saveBtn" onclick="updateEmployee()">Save</button>
+        <button onclick="javascript:history.back(1)">Back</button>
     </div>
     <script src="/js/script.js"></script>
 </body>

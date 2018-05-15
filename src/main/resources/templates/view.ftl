@@ -20,6 +20,8 @@
         <select class="add-block-select" id="departmentSelect">
             <option>${employee.departmentName}</option>
         </select>
+
+        <button onclick="javascript:history.back(1)">Back</button>
     </div>
     <script src="/js/script.js"></script>
 </body>
