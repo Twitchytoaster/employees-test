@@ -1,8 +1,10 @@
-package com.ukeess.crud.controller;
+package com.ukeess.crud.web.controller;
 
-import com.ukeess.crud.controller.dto.DepartmentsResponse;
-import com.ukeess.crud.controller.dto.EmployeeDto;
-import com.ukeess.crud.controller.pagination.PaginationManager;
+import com.ukeess.crud.web.request.EmployeeInsertRequest;
+import com.ukeess.crud.web.request.EmployeeUpdateRequest;
+import com.ukeess.crud.web.dto.DepartmentsResponse;
+import com.ukeess.crud.web.dto.EmployeeDto;
+import com.ukeess.crud.web.pagination.PaginationManager;
 import com.ukeess.crud.entity.Department;
 import com.ukeess.crud.entity.Employee;
 import com.ukeess.crud.repository.EmployeeRepository;

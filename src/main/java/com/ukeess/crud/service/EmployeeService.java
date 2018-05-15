@@ -1,8 +1,8 @@
 package com.ukeess.crud.service;
 
-import com.ukeess.crud.controller.EmployeeInsertRequest;
-import com.ukeess.crud.controller.EmployeeUpdateRequest;
-import com.ukeess.crud.controller.dto.EmployeeDto;
+import com.ukeess.crud.web.request.EmployeeInsertRequest;
+import com.ukeess.crud.web.request.EmployeeUpdateRequest;
+import com.ukeess.crud.web.dto.EmployeeDto;
 import com.ukeess.crud.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

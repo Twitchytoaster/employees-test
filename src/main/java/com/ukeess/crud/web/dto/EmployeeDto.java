@@ -1,4 +1,4 @@
-package com.ukeess.crud.controller.dto;
+package com.ukeess.crud.web.dto;
 
 
 public class EmployeeDto {

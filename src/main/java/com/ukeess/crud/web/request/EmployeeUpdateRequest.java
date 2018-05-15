@@ -1,4 +1,4 @@
-package com.ukeess.crud.controller;
+package com.ukeess.crud.web.request;
 
 public class EmployeeUpdateRequest {
 

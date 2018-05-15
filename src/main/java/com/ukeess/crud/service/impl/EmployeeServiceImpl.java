@@ -1,9 +1,8 @@
 package com.ukeess.crud.service.impl;
 
-import com.ukeess.crud.controller.EmployeeInsertRequest;
-import com.ukeess.crud.controller.EmployeeUpdateRequest;
-import com.ukeess.crud.controller.dto.EmployeeDto;
-import com.ukeess.crud.entity.Department;
+import com.ukeess.crud.web.request.EmployeeInsertRequest;
+import com.ukeess.crud.web.request.EmployeeUpdateRequest;
+import com.ukeess.crud.web.dto.EmployeeDto;
 import com.ukeess.crud.entity.Employee;
 import com.ukeess.crud.repository.EmployeeRepository;
 import com.ukeess.crud.service.EmployeeService;

@@ -1,4 +1,4 @@
-package com.ukeess.crud.controller.pagination;
+package com.ukeess.crud.web.pagination;
 
 import com.ukeess.crud.entity.Employee;
 import org.springframework.data.domain.Page;
