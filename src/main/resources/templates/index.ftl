@@ -48,7 +48,11 @@
     </#if>
 
     <#list pages as page>
-        <div class="page-button"><a href="/employees?page=${page}">${page}<a/></div>
+        <#if startsWithIsPresent>
+            <div class="page-button"><a href="/employees?page=${page}&startsWith=${startsWith}">${page}<a/></div>
+        <#else>
+            <div class="page-button"><a href="/employees?page=${page}">${page}<a/></div>
+        </#if>
     </#list>
 
     <#if rightDots>

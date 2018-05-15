@@ -54,10 +54,10 @@ public class EmployeeController {
     @GetMapping("/employees")
     public String getAllEmployees(ModelMap modelMap
             , @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable
-            , @RequestParam(value = "criteria", required = false) String criteria) {
+            , @RequestParam(value = "startsWith", required = false) String startsWith) {
 
-        if(criteria != null) {
-            Page<Employee> page = employeeRepository.findAllByNameStartsWith(criteria, pageable);
+        if(startsWith != null) {
+            Page<Employee> page = employeeRepository.findAllByNameStartsWith(startsWith, pageable);
             List<EmployeeDto> employeeDtos = employeeService.getEmployeeDtos(page.getContent());
 
             modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
@@ -65,6 +65,8 @@ public class EmployeeController {
             modelMap.addAttribute("employees", employeeDtos);
             modelMap.addAttribute("current", page.getNumber());
             modelMap.addAttribute("pages", paginationManager.createPages(page));
+            modelMap.addAttribute("startsWithIsPresent", true);
+            modelMap.addAttribute("startsWith", startsWith);
         } else {
             Page<Employee> page = employeeService.findAll(pageable);
             List<EmployeeDto> employeeDtos = employeeService.getEmployeeDtos(page.getContent());
@@ -74,6 +76,7 @@ public class EmployeeController {
             modelMap.addAttribute("employees", employeeDtos);
             modelMap.addAttribute("current", page.getNumber());
             modelMap.addAttribute("pages", paginationManager.createPages(page));
+            modelMap.addAttribute("startsWithIsPresent", false);
         }
 
         return "index";
