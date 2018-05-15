@@ -34,6 +34,9 @@ public class EmployeeController {
     private PaginationManager paginationManager;
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
     public EmployeeController(EmployeeService employeeService
             , DepartmentService departmentService
             , PaginationManager paginationManager) {
@@ -49,15 +52,29 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public String getAllEmployees(ModelMap modelMap, @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Employee> page = employeeService.findAll(pageable);
-        List<EmployeeDto> employeeDtos = getEmployeeDtos(page.getContent());
+    public String getAllEmployees(ModelMap modelMap
+            , @PageableDefault(size = 3, direction = Sort.Direction.ASC) Pageable pageable
+            , @RequestParam(value = "criteria", required = false) String criteria) {
 
-        modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
-        modelMap.addAttribute("rightDots", paginationManager.hasRightDots(page));
-        modelMap.addAttribute("employees", employeeDtos);
-        modelMap.addAttribute("current", page.getNumber());
-        modelMap.addAttribute("pages", paginationManager.createPages(page));
+        if(criteria != null) {
+            Page<Employee> page = employeeRepository.findAllByNameStartsWith(criteria, pageable);
+            List<EmployeeDto> employeeDtos = employeeService.getEmployeeDtos(page.getContent());
+
+            modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
+            modelMap.addAttribute("rightDots", paginationManager.hasRightDots(page));
+            modelMap.addAttribute("employees", employeeDtos);
+            modelMap.addAttribute("current", page.getNumber());
+            modelMap.addAttribute("pages", paginationManager.createPages(page));
+        } else {
+            Page<Employee> page = employeeService.findAll(pageable);
+            List<EmployeeDto> employeeDtos = employeeService.getEmployeeDtos(page.getContent());
+
+            modelMap.addAttribute("leftDots", paginationManager.hasLeftDots(page));
+            modelMap.addAttribute("rightDots", paginationManager.hasRightDots(page));
+            modelMap.addAttribute("employees", employeeDtos);
+            modelMap.addAttribute("current", page.getNumber());
+            modelMap.addAttribute("pages", paginationManager.createPages(page));
+        }
 
         return "index";
     }
@@ -119,14 +136,5 @@ public class EmployeeController {
         EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getName(), employee.isActive(), employee.getDepartment().getName());
         modelMap.addAttribute("employee", employeeDto);
         return "view";
-    }
-
-    private List<EmployeeDto> getEmployeeDtos(List<Employee> employees) {
-        //TODO fix null pointer in department section
-        return employees.stream().map(e -> new EmployeeDto(e.getId()
-                , e.getName()
-                , e.isActive()
-                , e.getDepartment().getName()))
-                .collect(Collectors.toList());
     }
 }

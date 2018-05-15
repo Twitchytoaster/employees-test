@@ -11,6 +11,9 @@ public class EmployeeDto {
 
     private String departmentName;
 
+    public EmployeeDto() {
+    }
+
     public EmployeeDto(Long id, String name, boolean active, String departmentName) {
         this.id = id;
         this.name = name;

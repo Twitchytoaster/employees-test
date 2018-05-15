@@ -25,4 +25,6 @@ public interface EmployeeService {
 
     EmployeeDto createDtoForUpdatePage(Employee employee);
 
+    List<EmployeeDto> getEmployeeDtos(List<Employee> employees);
+
 }

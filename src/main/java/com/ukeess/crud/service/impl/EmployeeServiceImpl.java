@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -63,5 +64,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto createDtoForUpdatePage(Employee employee) {
         EmployeeDto employeeDto = new EmployeeDto(employee.getId(), employee.getName(), employee.isActive(), employee.getDepartment().getName());
         return employeeDto;
+    }
+
+    @Override
+    public List<EmployeeDto> getEmployeeDtos(List<Employee> employees) {
+        return employees.stream().map(e -> {
+            EmployeeDto dto = new EmployeeDto();
+            dto.setId(e.getId());
+            dto.setName(e.getName());
+            dto.setActive(e.isActive());
+            String departmentName = e.getDepartment() != null ? e.getDepartment().getName() : null;
+            dto.setDepartmentName(departmentName);
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
