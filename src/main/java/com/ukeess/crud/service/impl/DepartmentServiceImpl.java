@@ -6,6 +6,7 @@ import com.ukeess.crud.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
@@ -46,5 +47,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department findDepartmentByName(String departmentName) {
         return departmentRepository.findByName(departmentName);
+    }
+
+    @PostConstruct
+    private void insertDepartments() {
+        if(departmentRepository.findByName("Tech") == null) {
+            departmentRepository.save(new Department("Tech"));
+        }
+        if(departmentRepository.findByName("Finance") == null) {
+            departmentRepository.save(new Department("Finance"));
+        }
     }
 }
